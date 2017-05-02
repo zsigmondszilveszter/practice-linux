@@ -30,6 +30,7 @@ int main(){
     memset(&server_address, 0, sizeof(struct sockaddr_in));
     server_address.sin_family = AF_INET;
     server_address.sin_port = htons(2017);
+
     inet_aton("192.168.1.7", &server_address.sin_addr);
 
     //--------------------------------------------------------------------------
@@ -39,6 +40,7 @@ int main(){
         switch(errno){
             case EACCES: fprintf(stderr, "The address is protected, and the user is not the superuser.\n");break;
             case EADDRINUSE: fprintf(stderr, "The given address is already in use.\n");break;
+            case ECONNREFUSED: fprintf(stderr, "No-one listening on the remote address.\n");break;
             default: fprintf(stderr, "Something went wrong with socket accepting, the error code is %i\n", errno);break;
         }
         return -1;
@@ -49,7 +51,7 @@ int main(){
     printf("Type \"exit\" to exit or any other message to send\n");
     char buf[500];
     while(1){
-        scanf("%s", &buf);
+        scanf("%s",(char *) &buf);
         if( strcmp(buf, "exit") == 0){
             return 0;
         }
