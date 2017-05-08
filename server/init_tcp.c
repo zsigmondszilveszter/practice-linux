@@ -12,6 +12,7 @@ int init_tcp(){
             case EACCES: fprintf(stderr, "Permission to create a socket of the specified type and/or protocol is denied.\n"); break;
             default: fprintf(stderr, "Something went wrong with socket creation, the error code is %i\n", errno);break;
         }
+        close(tcp_socket);
         return -1;
     }
 
@@ -29,6 +30,7 @@ int init_tcp(){
             case EADDRINUSE: fprintf(stderr, "The given address for binding is already in use.\n"); break;
             default: fprintf(stderr, "Something went wrong with socket binding, the error code is %i\n", errno);break;
         }
+        close(tcp_socket);
         return -1;
     }
 
@@ -40,6 +42,7 @@ int init_tcp(){
             case EADDRINUSE: fprintf(stderr, "Another socket is already listening on the same port.\n"); break;
             default: fprintf(stderr, "Something went wrong with socket listening, the error code is %i\n", errno);break;
         }
+        close(tcp_socket);
         return -1;
     }
 

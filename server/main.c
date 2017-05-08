@@ -31,9 +31,10 @@ int main(){
         return -1;
     }
 
-    char buffer[500];
+    char buffer[500] = {0};
     while( 1 ){
-        int len = read(incoming_socket, buffer, 500, 0);
+        memset(buffer, 0, sizeof buffer);
+        int len = recv(incoming_socket, buffer, 500, 0);
         if(len < 0){
             switch(errno){
                 case EAGAIN: fprintf(stderr, "The socket is marked nonblocking and the receive operation...\n");break;
@@ -47,7 +48,11 @@ int main(){
                 case ENOTSOCK: fprintf(stderr, "The file descriptor sockfd does not refer to a socket.\n");break;
                 default: fprintf(stderr, "Something went wrong with receiving messages, the error code is %i\n", errno);break;
             }
+            close(incoming_socket);
             return -1;
+        } else if(len == 0){
+            printf("The connection was closed\n");
+            break;
         }
         printf("Incoming message: %s\n", buffer);
     }
