@@ -21,8 +21,8 @@ int init_tcp(){
     //--------------------------------------------------------------------------
     memset(&server_address, 0, sizeof(struct sockaddr_in));
     server_address.sin_family = AF_INET;
-    server_address.sin_port = htons(2017);
-    inet_aton("192.168.1.7", &server_address.sin_addr);
+    server_address.sin_port = htons(1988);
+    inet_aton("192.168.137.155", &server_address.sin_addr);
 
     if(bind(tcp_socket,(struct sockaddr *) &server_address, sizeof(struct sockaddr_in)) < 0){
         switch(errno){
