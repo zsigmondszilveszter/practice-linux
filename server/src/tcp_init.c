@@ -1,4 +1,5 @@
-#include "init_tcp.h"
+#include "general_includes.h"
+#include "tcp_init.h"
 
 int init_tcp(){
     struct sockaddr_in server_address;
@@ -17,12 +18,19 @@ int init_tcp(){
     }
 
     //--------------------------------------------------------------------------
+    // configure the socket
+    //--------------------------------------------------------------------------
+    int enable = 1;
+    if (setsockopt(tcp_socket, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int)) < 0)
+        fprintf(stderr, "setsockopt(SO_REUSEADDR) failed");
+
+    //--------------------------------------------------------------------------
     // binding the socket to a local address
     //--------------------------------------------------------------------------
     memset(&server_address, 0, sizeof(struct sockaddr_in));
     server_address.sin_family = AF_INET;
     server_address.sin_port = htons(1988);
-    inet_aton("192.168.137.155", &server_address.sin_addr);
+    inet_aton("192.168.1.7", &server_address.sin_addr);
 
     if(bind(tcp_socket,(struct sockaddr *) &server_address, sizeof(struct sockaddr_in)) < 0){
         switch(errno){

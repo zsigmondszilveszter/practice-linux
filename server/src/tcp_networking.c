@@ -1,10 +1,29 @@
-// #include <stdio.h>
-// #include <stdlib.h>
-// #include <string.h>
+/*
+    Szilveszter Zsigmond 31.12.2017
+*/
+#include "general_includes.h"
+#include <pthread.h>
+#include "tcp_init.h"
+#include "tcp_networking.h"
 
-#include "init_tcp.h"
+int networking(){
+    pthread_t thread1;
+    int iret1;
 
-int main(){
+
+
+    //--------------------------------------------------------------------------
+    // create a new pthread
+    //--------------------------------------------------------------------------
+    iret1 = pthread_create( &thread1, NULL, (void *) listening_for_new_connection, "1");
+    // wait for the thread to finish
+    pthread_join( thread1, NULL);
+}
+
+int listening_for_new_connection(void * ptr){
+    char *message;
+    message = (char *) ptr;
+
     int tcp_socket;
     struct sockaddr_in peer_addr;
     socklen_t peer_addr_size = sizeof(struct sockaddr_in);
@@ -20,7 +39,7 @@ int main(){
     //--------------------------------------------------------------------------
     // waiting for connections
     //--------------------------------------------------------------------------
-    printf("Listening and accepting incoming TCP socket connections. Press Ctrl+C to exit\n");
+    printf("Thread.%s is listening and accepting incoming TCP socket connections.\n", message);
     int incoming_socket = accept(tcp_socket, (struct sockaddr *) &peer_addr, &peer_addr_size);
     if( incoming_socket < 0 ){
         switch(errno){
@@ -54,8 +73,8 @@ int main(){
             printf("The connection was closed\n");
             break;
         }
+        printf("------------------------\n");
         printf("Incoming message: %s\n", buffer);
     }
-
     return 0;
 }
