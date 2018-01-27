@@ -29,7 +29,7 @@ int main(){
     //--------------------------------------------------------------------------
     memset(&server_address, 0, sizeof(struct sockaddr_in));
     server_address.sin_family = AF_INET;
-    server_address.sin_port = htons(2017);
+    server_address.sin_port = htons(1988);
 
     inet_aton("192.168.1.7", &server_address.sin_addr);
 
@@ -50,17 +50,26 @@ int main(){
 
     printf("Type \"exit\" to exit or any other message to send\n");
     char buf[500];
+    char c;
+    int i;
     while(1){
-        scanf("%s",(char *) &buf);
+        i=0;
+        while(1){
+            c = getchar();
+            if(c == '\n') break;
+            buf[i] = c;
+            i++;
+        }
         if( strcmp(buf, "exit") == 0){
             return 0;
         }
-        if( send(tcp_socket, buf, strlen(buf), 0) < 0){
+        if( send(tcp_socket, buf, strlen(buf) + 1, 0) < 0){
             switch(errno){
                 default: fprintf(stderr, "Something went wrong with sending message, the error code is %i\n", errno);break;
             }
             return -1;
         }
+        memset(&buf, 0, sizeof(buf));
     }
 
     return 0;
