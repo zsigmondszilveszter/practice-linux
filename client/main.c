@@ -49,7 +49,7 @@ int main(){
     }
 
     printf("Type \"exit\" to exit or any other message to send\n");
-    char buf[500];
+    char buf[500] = {0};
     char c;
     int i;
     while(1){

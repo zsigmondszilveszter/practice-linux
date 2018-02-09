@@ -9,19 +9,19 @@ SDIR=src
 # store object files in this directory
 ODIR=$(SDIR)/obj
 # location for library functions
-LDIR =lib
+LDIR =$(SDIR)/lib
 
-_DEPS = general_includes.h tcp_init.h tcp_networking.h
+_DEPS = general_includes.h tcp_init.h tcp_networking.h thread_handler.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ = tcp_init.o tcp_networking.o main.o
+_OBJ = tcp_init.o tcp_networking.o main.o thread_handler.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 # every object file depends on the certain .c file and the header files too
 $(ODIR)/%.o: $(SDIR)/%.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS) $(LIBS)
 
-# the first and default make rule, this links the ovject files and builds the ELF file with the name of the rule
+# the first and default make rule, this links the object files and builds the ELF file with the name of the rule
 qc_server: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
 

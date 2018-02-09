@@ -1,33 +1,11 @@
 /*
     Szilveszter Zsigmond 31.12.2017
 */
-#include "general_includes.h"
-#include <pthread.h>
+#include "general_header.h"
 #include "tcp_init.h"
 #include "tcp_networking.h"
 
 int networking(){
-    pthread_t thread1;
-    int iret1;
-
-
-
-    //--------------------------------------------------------------------------
-    // create a new pthread
-    //--------------------------------------------------------------------------
-    iret1 = pthread_create( &thread1, NULL, (void *) listening_for_new_connection, "1");
-    // wait for the thread to finish
-    pthread_join( thread1, NULL);
-}
-
-int listening_for_new_connection(void * ptr){
-    char *message;
-    message = (char *) ptr;
-
-    int tcp_socket;
-    struct sockaddr_in peer_addr;
-    socklen_t peer_addr_size = sizeof(struct sockaddr_in);
-
     //--------------------------------------------------------------------------
     // init TCP socket
     //--------------------------------------------------------------------------
@@ -35,6 +13,21 @@ int listening_for_new_connection(void * ptr){
     if( tcp_socket < 0 ){
         return -1;
     }
+    //--------------------------------------------------------------------------
+    // create new threads
+    //--------------------------------------------------------------------------
+    iret[thread_counter] = pthread_create( &thread[thread_counter], NULL, (void *) listening_for_new_connection, "1");
+    thread_counter++;
+
+    iret[thread_counter] = pthread_create( &thread[thread_counter], NULL, (void *) listening_for_new_connection, "2");
+    thread_counter++;
+}
+
+int listening_for_new_connection(void * ptr){
+    char *message;
+    message = (char *) ptr;
+
+    socklen_t peer_addr_size = sizeof(struct sockaddr_in);
 
     //--------------------------------------------------------------------------
     // waiting for connections
@@ -70,7 +63,7 @@ int listening_for_new_connection(void * ptr){
             close(incoming_socket);
             return -1;
         } else if(len == 0){
-            printf("The connection was closed\n");
+            printf("The connection was closed %s\n",message);
             break;
         }
         printf("------------------------\n");
