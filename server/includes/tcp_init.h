@@ -5,7 +5,7 @@
 
 #define LISTEN_BACKLOG 50
 
-#define SERVER_IP "192.168.1.7"
+#define SERVER_IP "192.168.1.5"
 #define SERVER_PORT 1988
 
 int tcp_socket;
