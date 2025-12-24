@@ -1,10 +1,10 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netinet/tcp.h>
+#include <arpa/inet.h>
 #include <errno.h>
 
 
@@ -31,7 +31,7 @@ int main(){
     server_address.sin_family = AF_INET;
     server_address.sin_port = htons(1988);
 
-    inet_aton("192.168.1.7", &server_address.sin_addr);
+    inet_aton("192.168.1.230", &server_address.sin_addr);
 
     //--------------------------------------------------------------------------
     // connect to the address spcified above

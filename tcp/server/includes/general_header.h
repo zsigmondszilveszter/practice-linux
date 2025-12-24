@@ -5,7 +5,11 @@
 #include <errno.h>
 #include <pthread.h>
 
+#ifndef _GENERAL_HEADER_H    /* Guard against multiple inclusion */
+#define _GENERAL_HEADER_H
 
-pthread_t thread[10];
-int iret[10];
-int thread_counter;
+extern pthread_t thread[10];
+extern int iret[10];
+extern int thread_counter;
+
+#endif

@@ -1,6 +1,7 @@
 # headers location
 IDIR =includes
 CC=gcc
+MKDIR=mkdir
 CFLAGS=-I$(IDIR)
 LIBS=-pthread
 
@@ -22,11 +23,20 @@ $(ODIR)/%.o: $(SDIR)/%.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS) $(LIBS)
 
 # the first and default make rule, this links the object files and builds the ELF file with the name of the rule
-qc_server: $(OBJ)
+server: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
+
+#
+$(OBJ): | CreateObjDir
 
 .PHONY: clean
 
 # clean the project directory from the object files and temporary stuffs
 clean:
 	rm -f $(ODIR)/*.o $(SDIR)/*~ core $(IDIR)/*~
+	rm -f server_*
+
+.PHONY: CreateObjDir
+# create object directory if it doesn't exist
+CreateObjDir:
+	@$(MKDIR) -p $(ODIR)

@@ -1,6 +1,10 @@
 #include "general_header.h"
 #include "thread_handler.h"
 
+
+// this is declared in headers and defined here
+pthread_t thread[10];
+
 /*
 * This function waits and blocks the execution of program until all the thread finish their work
 * - thread_counter - is a global variable for counting the started threads

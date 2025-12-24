@@ -5,6 +5,12 @@
 #include "tcp_init.h"
 #include "tcp_networking.h"
 
+// these are declared in headers and defined here
+int tcp_socket;
+int iret[10];
+int thread_counter;
+struct sockaddr_in peer_addr;
+
 int networking(){
     //--------------------------------------------------------------------------
     // init TCP socket
